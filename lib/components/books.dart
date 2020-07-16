@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:snotes/pages/product_details.dart';
+import 'package:snotes/components/product_details.dart';
 
 class Books extends StatefulWidget {
   @override

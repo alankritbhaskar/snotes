@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:flutter/services.dart';
+import 'package:snotes/pages/check2.dart';
 import 'package:snotes/subtasks/image_text.dart';
 import 'package:snotes/components/horizontalListView.dart';
 import 'package:snotes/components/books.dart';
 import 'package:snotes/constants/const.dart';
+import 'package:snotes/pages/login.dart';
+import 'package:snotes/components/requestbook.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,21 +15,39 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-  int _currentIndex=0;
+  int _currentIndex = 0;
 
   // bottom navigator pages navigation
 
-  final tabs=[
-    Center(child: Text('Explore'),),
-    Center(child: Text('Favourite'),),
-    Center(child: Text('My Downloads'),),
-    Center(child: Text('Request Note'),),
-    Center(child: Text('Account'),),
-
+  final tabs = [
+    Center(
+      child: Text('Explore'),
+    ),
+    Center(
+      child: Text('Favourite'),
+    ),
+    Center(
+      child: Text('My Downloads'),
+    ),
+    Center(
+      child: Text('Request Note'),
+    ),
+    Center(
+      child: Text('Account'),
+    ),
   ];
+
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
+
     Widget image_corousel = new Container(
         height: 200.0,
         child: Carousel(
@@ -69,7 +91,8 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.white,
               ),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>ImageToText()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ImageToText()));
               }),
           IconButton(
               icon: Icon(
@@ -86,15 +109,15 @@ class _HomePageState extends State<HomePage> {
 
           children: <Widget>[
             UserAccountsDrawerHeader(
-              accountName: Text('Alankrit'),
+              accountName: Text('alan'),
               accountEmail: Text('alan@gmail.com'),
               currentAccountPicture: GestureDetector(
                 child: CircleAvatar(
-                  backgroundColor: Colors.blueGrey,
-                  child: Icon(
-                    Icons.person_outline,
-                    color: Colors.white,
-                  ),
+                  // backgroundImage: NetworkImage(
+                  // imageUrl,
+                  //),
+                  radius: 60,
+                  backgroundColor: Colors.transparent,
                 ),
               ),
             ),
@@ -166,7 +189,13 @@ class _HomePageState extends State<HomePage> {
             ),
 
             InkWell(
-              onTap: () {},
+              onTap: () {
+                signOutGoogle();
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) {
+                  return LoginScreen();
+                }), ModalRoute.withName('/'));
+              },
               child: ListTile(
                 title: Text('Log Out'),
                 leading: Icon(
@@ -201,7 +230,6 @@ class _HomePageState extends State<HomePage> {
 
           // Main book notes availability screen
 
-
           Padding(padding: const EdgeInsets.all(2)),
 
           Padding(
@@ -211,61 +239,87 @@ class _HomePageState extends State<HomePage> {
                 Text(
                   'AVAILABLE NOTES',
                   textAlign: TextAlign.left,
-                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                 ),
               ],
             ),
           ),
 
           Flexible(
-
             child: Books(),
           ),
-
         ],
       ),
 
       // bottom navigation bar
 
+
       bottomNavigationBar: BottomNavigationBar(
+
         currentIndex: _currentIndex,
-        type:BottomNavigationBarType.fixed,
+        type: BottomNavigationBarType.fixed,
         backgroundColor: primaryBlack,
         iconSize: 25,
-
-
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.library_books,color: Colors.white,),
-            backgroundColor:  Colors.blueGrey,
-            title: Text('Explore',style: TextStyle(color: Colors.white,fontSize: 13)),
+
+            icon: Icon(
+              Icons.library_books,
+              color: Colors.white,
+            ),
+            backgroundColor: Colors.blueGrey,
+            title: Text('Explore',
+                style: TextStyle(color: Colors.white, fontSize: 13)),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite,color: Colors.white,),
+            icon: Icon(
+              Icons.favorite,
+              color: Colors.white,
+            ),
+            backgroundColor: Colors.blueGrey,
+            title: Text('Favourite',
+                style: TextStyle(color: Colors.white, fontSize: 13)),
+          ),
+          BottomNavigationBarItem(
+
+            icon: Icon(
+              Icons.file_download,
+              color: Colors.white,
+            ),
+            backgroundColor: Colors.blueGrey,
+            title: Text('Downloads',
+                style: TextStyle(color: Colors.white, fontSize: 13)),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.edit,
+              color: Colors.white,
+            ),
 
             backgroundColor: Colors.blueGrey,
-            title: Text('Favourite',style: TextStyle(color: Colors.white,fontSize: 13)),
-
+            title: InkWell(
+              child: Text('Request Note',
+                  style: TextStyle(color: Colors.white, fontSize: 11)),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => RequestBook()));
+              },
+            ),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.file_download,color: Colors.white,),
-            backgroundColor:  Colors.blueGrey,
-            title: Text('Downloads',style: TextStyle(color: Colors.white,fontSize: 13)),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.edit,color: Colors.white,),
+            icon: Icon(
+              Icons.account_circle,
+              color: Colors.white,
+            ),
             backgroundColor: Colors.blueGrey,
-            title: Text('Request Note',style: TextStyle(color: Colors.white,fontSize: 11)),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle,color: Colors.white,),
-            backgroundColor: Colors.blueGrey,
-            title: Text('Account',style: TextStyle(color: Colors.white,fontSize: 13)),
+            title: Text('Account',
+                style: TextStyle(color: Colors.white, fontSize: 13)),
           ),
         ],
-        onTap: (index){
-          _currentIndex=index;
-        },),
+        onTap: (index) {
+          _currentIndex = index;
+        },
+      ),
     );
   }
 }

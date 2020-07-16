@@ -25,14 +25,17 @@ dependencies:
   cupertino_icons: ^0.1.2
   carousel_pro:
   cloud_firestore: ^0.13.5
-  firebase_auth: ^0.16.0
-  google_sign_in: ^4.5.1
   shared_preferences: ^0.5.7+3
   fluttertoast: ^4.0.1
-  font_awesome_flutter:
-  google_fonts:
   firebase_ml_vision:
   image_picker:
+  flutter_spinkit:
+  firebase_auth:
+  file_picker:
+  firebase_database:
+  google_sign_in:
+  font_awesome_flutter:
+  google_fonts:
 
 dev_dependencies:
   flutter_test:
